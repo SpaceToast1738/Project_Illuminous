@@ -1,33 +1,35 @@
 
-//Declare ledName variables (startPin = 23 [+2] | Max = 45)
+//Declare variables
 int LED[12];
-int pin;
-int i;
+int pin = 23, i, val = 0;
 
-//Assign buttonName to pin
+//Assign button push to pin
 int ptb = 38;
-int val = 0;
 
 void setup() {
-  Serial.begin(9600);
-  // put your setup code here, to run once:
-  pin = 23;
+  //This runs once to initialise all the variables.
+  Serial.begin(9600); //Initialise a serial port for debugging
+
+  //loop to assign each LED a pin
+  //this should loop once for every LED in the circuit [Currently: 12]
   for(i = 0; i < 12; i++){
-    LED[i] = pin;
-    pin = pin + 2;
+    LED[i] = pin; //pin starts at pin 23 initialised at variable stage
+    pin = pin + 2; //LEDs are currently positioned at every 2 pins so increment pins by 2
   };
 
+  //Another loop to set all the LEDs to output devices
+  //this should loop once for every LED in the circuit [Currently: 12]
   for(i = 0; i <= 12; i++){
     pinMode (LED[i], OUTPUT);
   };
+
+  //set the ptb to an input
   pinMode (ptb, INPUT);
 };
 
 void loop() { 
   // put your main code here, to run repeatedly:
-  Serial.print(val);
-  Serial.print(" ");  
-
+  
   for(i = 0; i <= 12; i++){     
     digitalWrite(LED[i], HIGH);
     delay(100);
