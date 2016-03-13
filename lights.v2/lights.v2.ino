@@ -6,6 +6,8 @@ int i, k, ledIndex, ledPinSelect, timeMultiplier = 60, vRead, button[4];
 const int pinLowerLED = 30, pinUpperLED = 41; //defines highest and lowest LED pin
 
 void setup() {
+   pinMode(12, OUTPUT);
+   digitalWrite(12, LOW);
   Serial.begin(9600);
 
   for(i = pinLowerLED; i <= pinUpperLED; i++){
@@ -20,6 +22,7 @@ void setup() {
   for(i = 0; i <= 3; i++){
     pinMode(button[i], INPUT);
   }
+ randomSeed(analogRead(15));
   gameStart();
 }
 
@@ -37,11 +40,8 @@ void loop(){
       break;
     }
     
-    if(i == timeMultiplier){
+    if(i == timeMultiplier)
       gameOver();
-    }else if(vRead > 100){
-      break;
-    }
   }
   Serial.println(100);
   Serial.println();
@@ -61,7 +61,6 @@ void gameStart(){
     digitalWrite(LED[i],LOW);
     delay(200);
   }
-  loop();
 }
 
 void selectLed(){
@@ -103,16 +102,14 @@ void selectLedColour(){
 }
 
 void gameOver(){
-  /*for(i = 0 ; i <= 30; i++){
+  for(i = 0 ; i <= 600; i++){
     selectLed();
-    delay(100);
+    delay(200);
     for(k = pinLowerLED; k <= pinUpperLED; k++){
       digitalWrite(LED[k - pinLowerLED], LOW);
     }
-  }*/
-  timeMultiplier = 60;
-  delay(2000);
-  gameStart();
+  }
+  digitalWrite(12, HIGH);
 }
 
 
