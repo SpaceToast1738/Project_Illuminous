@@ -6,23 +6,19 @@ int i, k, ledIndex, ledPinSelect, timeMultiplier = 60, vRead, button[4];
 const int pinLowerLED = 30, pinUpperLED = 41; //defines highest and lowest LED pin
 
 void setup() {
-   pinMode(12, OUTPUT);
-   digitalWrite(12, LOW);
   Serial.begin(9600);
 
   for(i = pinLowerLED; i <= pinUpperLED; i++){
-    LED[i - pinLowerLED] = i;
+    k = i - pinLowerLED;
+    LED[k] = i;
+    pinMode(LED[k], OUTPUT);
   }
+  
   for(i = 0; i <= 3; i++){
     button[i] = i;
-  }
-  for(i = pinLowerLED; i <= pinUpperLED; i++){
-    pinMode(LED[i - pinLowerLED], OUTPUT);
-  }
-  for(i = 0; i <= 3; i++){
     pinMode(button[i], INPUT);
   }
- randomSeed(analogRead(15));
+  randomSeed(analogRead(15));
   gameStart();
 }
 
@@ -43,8 +39,6 @@ void loop(){
     if(i == timeMultiplier)
       gameOver();
   }
-  Serial.println(100);
-  Serial.println();
   
   for(i = pinLowerLED; i <= pinUpperLED; i++){
     digitalWrite(LED[i - pinLowerLED], LOW);
@@ -65,7 +59,6 @@ void gameStart(){
 
 void selectLed(){
   ledIndex = (pinUpperLED - pinLowerLED) / 3;
-  ledIndex++;   
   ledPinSelect = pinLowerLED + (random(ledIndex) * 3);
   selectLedColour();
 }
@@ -100,16 +93,20 @@ void selectLedColour(){
       break;
   }
 }
+void software_Reset() // Restarts program from beginning but does not reset the peripherals and registers
+{
+  asm volatile ("  jmp 0");  
+}  
 
 void gameOver(){
-  for(i = 0 ; i <= 600; i++){
+  for(i = 0 ; i <= 24; i++){
     selectLed();
     delay(200);
     for(k = pinLowerLED; k <= pinUpperLED; k++){
       digitalWrite(LED[k - pinLowerLED], LOW);
     }
   }
-  digitalWrite(12, HIGH);
+  software_Reset();
 }
 
 
