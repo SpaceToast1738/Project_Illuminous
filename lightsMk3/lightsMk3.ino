@@ -11,42 +11,15 @@ void setup(){
     pinMode(led[i], OUTPUT);
     delay(1);
   }
-  //checkPin[pinLowerLed, pinUpperLed, led[pinBuffer], lineNumber]
-  errorStatus = checkPin(led[pinBuffer], 11);
+  //checkPin[lineNumber]
+  errorStatus = checkPin(11);
 }
 
 void loop() {
-  if (errorStatus > 0){
-    programFail();
-    //Serial.println(" err ");
-  }  
-}
-
-void gameStart(){
-  for(i = 0; i <= 12; i++){
-    digitalWrite(led[i],HIGH);
-    delay(5000);
-  }
-  for(i = 12; i >= 0; i--){
-    digitalWrite(led[i],LOW);
-    delay(5000);
-  }
-}
-
-void programFail(){
-  int ledIndex;
-  int ledSel;
-  int k;
+  if (errorStatus > 0)
+    programFail(errorStatus);
   
-  ledIndex = (pinBuffer / 3) - 1;
-  for(i = 0; i <= ledIndex; i++){
-    ledSel = (i * 3) + 2;
-    digitalWrite(led[ledSel], HIGH);
-  }
-  delay(2000);
-  for(i = 0; i <= ledIndex; i++){
-    ledSel = (i * 3) + 2;
-    digitalWrite(led[ledSel], LOW);
-  }
-  delay(2000);
 }
+
+
+

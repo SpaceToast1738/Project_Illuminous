@@ -1,23 +1,24 @@
-int checkPin(int pinBuffer, int lnNum){
+int checkPin(int lnNum){
   Serial.begin(9600); //open serial port
   int pinDiff;
+  int pinCheck;
 
   pinDiff = pinUpperLed - pinLowerLed;
-  pinBuffer--;
+  pinCheck = pinBuffer - 1;
   
-  if(pinBuffer > pinDiff){
+  if(pinCheck > pinDiff){
     Serial.print("Buffer Overflow: ");
     Serial.println(lnNum);
     return 1;
   }
 
-  if(pinBuffer < pinDiff){
+  if(pinCheck < pinDiff){
     Serial.print("Buffer Underflow: ");
     Serial.println(lnNum);
-    return 1;
+    return 2;
   }
 
-  if(pinUpperLed == (pinLowerLed + pinBuffer)){
+  if(pinCheck == (pinLowerLed + pinCheck)){
     Serial.print("Check Success: ");
     Serial.println(lnNum);
     return 0;
